@@ -3,42 +3,43 @@ class Artist
   
   @@all = [] 
   
-  def initialize(name)
+    def initialize(name)
     @name = name
     @songs = []
     save
   end
-  
-  def save
-    @@all << self
+
+  def self.all
+    @@all
   end
-  
+
+  def self.create(name)
+    artist = self.new(name)
+    artist.name = name
+    artist
+  end
+
+  def self.find(name)
+    self.all.detect { |artist| artist.name == name }
+  end
+
+  def self.find_or_create_by_name(name)
+    self.find(name) || self.create(name)
+  end
+
   def add_song(song)
     @songs << song
   end
-  
-  def self.find_or_create_by_name(artist)
-    found = self.all.find {|creator| creator.name == artist}
-    if found
-      found
-    else
-      new_guy = self.new(artist)
-      new_guy.save
-      new_guy
-    end
-  end
-  
-  def songs
-    @songs 
-  end
-  
+
   def print_songs
-    @songs.each do |song| 
-      puts song.name
-    end
+    songs.each { |song| puts song.name }
   end
-   
-  def self.all 
-    @@all 
+
+  def save
+    @@all << self
+  end
+
+  def songs
+    @songs
   end
 end
